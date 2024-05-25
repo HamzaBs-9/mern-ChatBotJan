@@ -1,0 +1,7 @@
+[
+    { "id": "not found", "label": "Authentification", "value": 5 },
+    { "id": "mot de passe", "label": "Mot de passe", "value": 25 },
+    { "id": "connection", "label": "Connection", "value": 30 },
+    { "id": "autres", "label": "Autres", "value": 25 }
+  ]
+  
