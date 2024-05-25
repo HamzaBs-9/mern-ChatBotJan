@@ -1,53 +1,33 @@
 import React, { createContext, useContext,  useState } from "react";
-import {
-  loginUser,
-  logoutUser,
-  signupUser,
-} from "../helpers/api-communicator";
+import { deleteCookie, readObjectFromCookie, saveObjectToCookie } from "../utils/cookies";
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const userFromCookie = readObjectFromCookie("user");
+  const [user, setUser] = useState(userFromCookie || null);
+  const [isLoggedIn, setIsLoggedIn] = useState(userFromCookie ? true : false);
 
 
 
-  
-  const login = async (email, password) => {
-    const data = await loginUser(email, password);
-    if (data) {
-      setUser({ email: data.email, name: data.name , role: data.role});
-      setIsLoggedIn(true);
-    }
+  const saveUser = (user, days = 18) => {
+    setUser(user);
+    saveObjectToCookie("user", user, days);
+    setIsLoggedIn(true);
   };
   
-  const signup = async (name, email, password, role) => {
-    const data = await signupUser(name, email, password, role);
-    if (data) {
-      setUser({ email: data.email, name: data.name, role: data.role });
-      setIsLoggedIn(true);
-    }
-  };
-  
-  const logout = async () => {
-    try{
-    await logoutUser();
-    setIsLoggedIn(false);
+  const removeUser = () => {
+    deleteCookie("user");
     setUser(null);
-    window.location.reload();
-  } catch (error) {
-    console.error("Logout failed:", error);
-    // Handle logout failure here, such as displaying an error message to the user
-  }
+    setIsLoggedIn(false);
   };
+  
 
   const value = {
     user,
     isLoggedIn,
-    login,
-    logout,
-    signup,
+    saveUser,
+    removeUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -12,6 +12,6 @@ const chatRoutes = Router();
 chatRoutes.post( "/v1/chat/completions",verifyToken, generateChatCompletion);
 chatRoutes.get("/all-chats", verifyToken, sendChatsToUser);
 chatRoutes.delete("/delete", verifyToken, deleteChats);
-chatRoutes.post("/rate/:messageId",rateMessage);
+chatRoutes.post("/rate/:messageId", verifyToken,rateMessage);
 
 module.exports = chatRoutes;

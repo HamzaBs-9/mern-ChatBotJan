@@ -4,7 +4,7 @@ const { randomUUID } = require("crypto");
 const chatSchema = new mongoose.Schema({
   id: {
     type: String,
-    default: randomUUID(),
+    default: randomUUID,
   },
   role: {
     type: String,

@@ -80,14 +80,14 @@ const rateMessage = async (req, res) => {
 
   try {
     const user = await User.findOneAndUpdate(
-      { "chats.id": messageId, "chats.role": "assistant" },
+      { _id: res.locals.jwtData.id, "chats.id": messageId },
       { $set: { "chats.$.liked": liked } },
-      { new: true } // Return the updated document
+      { new: true }
     );
 
     if (!user) {
       return res.status(404).json({ error: "Message not found" });
-    }
+    } 
 
     res.status(200).json({ message: "Rating updated successfully" });
   } catch (error) {

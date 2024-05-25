@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { IoIosLogIn } from "react-icons/io";
 import { Box, Typography, Button } from "@mui/material";
 import CustomizedInput from "../components/shared/CustomizedInput";
@@ -10,7 +10,7 @@ import axios from "axios";
 const Signup = () => {
   const navigate = useNavigate();
   const auth = useAuth();
- // const [isSubmitting, setIsSubmitting] = useState(false); // State to manage form submission
+  // const [isSubmitting, setIsSubmitting] = useState(false); // State to manage form submission
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,36 +21,29 @@ const Signup = () => {
     const email = formData.get("email");
     const password = formData.get("password");
     const role = "user"; // Set a default role
-    try {
-      const response = await axios.post(
-        "http://localhost:5005/api/v1/user/signup",
-        {
-          name,
-          email,
-          password,
-          role,
-        }
-      );
-
-      if (response.data.status === "success") {
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("email", email);
-      } 
-      toast.loading("Signing Up", { id: "signup" });
-      await auth.signup(name, email, password, role);
-      toast.success("Signed Up Successfully", { id: "signup" });
-      navigate("/chat")
-    } catch (error) {
-      console.log(error);
-      toast.error( "Signing Up Failed", { id: "signup" });
-    } /*finally {
-      setIsSubmitting(false); // Re-enable submit button
-    }*/
+    toast.loading("Signing Up", { id: "signup" });
+    axios
+      .post("http://localhost:5005/api/v1/user/signup", {
+        name,
+        email,
+        password,
+        role,
+      })
+      .then((res) => {
+        const { name, email, role } = res.data;
+        auth.saveUser({ name, email, role });
+        toast.success("Signed Up Successfully", { id: "signup" });
+        navigate("/chat");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.response.data, { id: "signup" });
+      });
   };
 
   useEffect(() => {
     if (auth?.user) {
-       navigate("/chat");
+      navigate("/chat");
     }
   }, [auth, navigate]);
 

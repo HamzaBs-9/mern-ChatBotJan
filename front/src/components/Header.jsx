@@ -4,9 +4,15 @@ import Toolbar from "@mui/material/Toolbar";
 import Logo from "./shared/Logo";
 import { useAuth } from "../context/AuthContext";
 import NavigationLink from "./shared/NavigationLink";
+import { logoutUser } from "../helpers/api-communicator";
 
 const Header = () => {
   const auth = useAuth();
+  const handleLogout = async () => {
+    logoutUser().then(()=> {
+      auth.removeUser();
+    })
+  };
   return (
     <AppBar
       sx={{ bgcolor: "transparent", position: "static", boxShadow: "none" }}
@@ -16,6 +22,16 @@ const Header = () => {
         <div>
           {auth?.isLoggedIn ? (
             <>
+            {
+              auth.user.role === "admin" ? (
+                <NavigationLink
+                  bg="#70b8ff"
+                  to="/dashboard"
+                  text="Dashboard"
+                  textColor="black"
+                />
+              ) : null
+            }
               <NavigationLink
                 bg="#70b8ff"
                 to="/chat"
@@ -27,7 +43,7 @@ const Header = () => {
                 textColor="white"
                 to="/"
                 text="logout"
-                onClick={auth.logout}
+                onClick={handleLogout}
               />
             </>
           ) : (
