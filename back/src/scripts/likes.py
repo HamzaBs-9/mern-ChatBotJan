@@ -2,18 +2,14 @@ from pymongo import MongoClient
 import json
 
 def fetch_data():
-    # Connect to MongoDB 
-    client = MongoClient('mongodb+srv://hamza:hbs_10.compass@compass.kdvmuiv.mongodb.net/')
+
+    client = MongoClient('***************')
     db = client['chatbot']  
     collection = db['users']  
-
-    # Fetching data from MongoDB
     data = collection.find({})
-
-    # Analyzing data
     results = {'likes': 0, 'dislikes': 0, 'no_reaction': 0}
     for item in data:
-        # Assuming 'liked' field is within a 'chats' sub-document
+       
         for chat in item.get('chats', []):  
             liked_status = chat.get('liked')  
             if liked_status is True:
@@ -26,7 +22,6 @@ def fetch_data():
     return results
 
 def write_json(data):
-    # Writing results to a JSON file
     with open('results.json', 'w') as f:
         json.dump(data, f, indent=4)
 

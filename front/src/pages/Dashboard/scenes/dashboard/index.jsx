@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Box, Button, Typography, useTheme } from "@mui/material";
+import React from "react";
+import { Box, Typography, useTheme } from "@mui/material";
 import { ResponsiveBar } from "@nivo/bar";
 import { ResponsivePie } from "@nivo/pie";
 
-import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import EmailIcon from "@mui/icons-material/Email";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { tokens } from "../../theme";
-import {mockBarData } from "../../data/mockData";//bech tedbadel 
 import ratingData from "../../data/ratingData.json";
 import complaintData from "../../data/complaintData.json";
 const totalComplaints = complaintData.reduce((sum, item) => sum + item.value, 0);

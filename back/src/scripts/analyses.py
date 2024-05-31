@@ -1,7 +1,5 @@
 import random
 import json
-
-# Define some intents and responses for IT product issues
 issues = [
     "authentication issue", 
     "compatibility versions", 
@@ -9,7 +7,6 @@ issues = [
     "404 errors", 
     "other errors"
 ]
-
 responses = {
     "authentication issue": [
         "Please check if you are using the correct username and password.",
@@ -37,17 +34,12 @@ responses = {
         "Ensure your internet connection is stable and retry."
     ]
 }
-
-# Function to generate synthetic conversations
 def generate_conversation():
     issue = random.choice(issues)
     response = random.choice(responses[issue])
     return {"input": f"I have an issue with {issue}", "output": response}
 
-# Generate a synthetic dataset
 dataset = [generate_conversation() for _ in range(1000)]
-
-# Optionally, add some manually created data
 manual_data = [
     {"input": "I have an authentication issue with my account.", "output": "Please check if you are using the correct username and password."},
     {"input": "I am facing compatibility issues with your web app.", "output": "Ensure you are using the latest version of the application."},
@@ -56,8 +48,6 @@ manual_data = [
     {"input": "There are some errors in the mobile app.", "output": "Please provide the exact error message you are seeing."}
 ]
 dataset.extend(manual_data)
-
-# Save the dataset to a JSON file
 with open('training_data.json', 'w') as f:
     json.dump(dataset, f, indent=4)
 
